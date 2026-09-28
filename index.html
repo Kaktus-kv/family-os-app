@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Family OS</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, system-ui, sans-serif;
+    background: var(--tg-theme-bg-color, #0e0e11);
+    color: var(--tg-theme-text-color, #ffffff);
+    min-height: 100vh;
+    padding: 20px 16px 40px;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeInDown 0.6s ease forwards;
+  }
+  .header .emoji {
+    font-size: 48px;
+    display: inline-block;
+    animation: bounce 2s ease infinite;
+  }
+  .header h1 {
+    font-size: 24px;
+    margin-top: 8px;
+    background: linear-gradient(90deg, #7f9cf5, #a78bfa, #f472b6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .card {
+    background: linear-gradient(145deg, #1a1a20, #232329);
+    border-radius: 18px;
+    padding: 20px 14px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: cardIn 0.5s ease forwards;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  }
+  .card:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+  .card .icon { font-size: 30px; margin-bottom: 8px; display: block; }
+  .card .label { font-size: 14px; font-weight: 600; }
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.10s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.20s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.30s; }
+  .card:nth-child(7) { animation-delay: 0.35s; }
+  .card:nth-child(8) { animation-delay: 0.40s; }
+  @keyframes cardIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <span class="emoji">👨‍👩‍👧‍👦</span>
+    <h1>Family OS</h1>
+  </div>
+  <div class="grid" id="menu">
+    <div class="card" data-action="calendar"><span class="icon">📅</span><span class="label">Календарь</span></div>
+    <div class="card" data-action="tasks"><span class="icon">✅</span><span class="label">Задачи</span></div>
+    <div class="card" data-action="shopping"><span class="icon">🛒</span><span class="label">Покупки</span></div>
+    <div class="card" data-action="budget"><span class="icon">💰</span><span class="label">Бюджет</span></div>
+    <div class="card" data-action="documents"><span class="icon">📄</span><span class="label">Документы</span></div>
+    <div class="card" data-action="medicine"><span class="icon">💊</span><span class="label">Аптечка</span></div>
+    <div class="card" data-action="members"><span class="icon">👥</span><span class="label">Участники</span></div>
+    <div class="card" data-action="settings"><span class="icon">⚙️</span><span class="label">Настройки</span></div>
+  </div>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+  const tg = window.Telegram?.WebApp;
+  if (tg) {
+    tg.ready();
+    tg.expand();
+  }
+
+  document.getElementById('menu').addEventListener('click', (e) => {
+    const card = e.target.closest('.card');
+    if (!card) return;
+    const action = card.dataset.action;
+    if (tg) {
+      tg.sendData(JSON.stringify({ action }));
+    } else {
+      alert('Открыто вне Telegram: ' + action);
+    }
+  });
+</script>
+</body>
+</html>
